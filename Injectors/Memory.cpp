@@ -2,9 +2,10 @@
 
 t_address Memory::AllocateMemory(t_address address, size_t size)
 {
-    auto buffer = VirtualAllocEx(this->processHandle,
-                     reinterpret_cast<void*>(address), size, MEM_COMMIT,
-                     PAGE_READWRITE);
+    void* allocation = VirtualAllocEx(this->processHandle, reinterpret_cast<void*>(address),
+                           size, MEM_COMMIT, PAGE_READWRITE);
 
-    return buffer;
+    t_address allocationAddress = reinterpret_cast<t_address>(allocation);
+
+    return allocationAddress;
 }

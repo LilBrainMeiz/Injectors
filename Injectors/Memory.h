@@ -31,7 +31,7 @@ public:
         }
         else
         {
-            PRINT_SUCCESS("processHandle was found");
+            PRINT_SUCCESS("processHandle was found\n");
         }
     }
     
@@ -49,7 +49,18 @@ public:
         
 
         WriteProcessMemory(this->processHandle, reinterpret_cast<void*>(address),
-            buffer.get(), sizeof(_Ty), 0);
+            buffer.get(), sizeof(_Ty), nullptr);
+    }
+
+    inline void WriteStringToMemory(t_address address, std::string str)
+    {
+        auto string = str.c_str();
+        auto length = str.length();
+
+        PRINT_SUCCESS("String to write : " << string << "\n");
+
+        WriteProcessMemory(this->processHandle, reinterpret_cast<void*>(address),
+                           string, length, nullptr);
     }
 
     template <typename _Ty>
@@ -58,7 +69,7 @@ public:
         auto buffer = std::make_shared<_Ty>();
 
         ReadProcessMemory(this->processHandle, reinterpret_cast<void*>(address),
-           buffer.get(), sizeof(_Ty), 0);
+           buffer.get(), sizeof(_Ty), nullptr);
 
         if (buffer == nullptr)
         {
@@ -71,6 +82,8 @@ public:
         return *buffer;
     }
 
-    void AllocateMemory(t_address address, size_t size);
+    t_address AllocateMemory(t_address address, size_t size);
+
+    inline HANDLE getHandle(){ return this->processHandle; }
 };
 

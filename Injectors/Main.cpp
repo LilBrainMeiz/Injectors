@@ -2,16 +2,24 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <functional>
 #include "Memory.h"
 
 int main(int argc, char** argv)
 {    
     auto memoryClass = std::make_unique<Memory>("AssaultCube");
    
-    t_address local;
-    local = memoryClass->ReadMemory<t_address>(0x50F4F4);
+    std::string dllPath{"D:\\dlls\\injected.dll"};
 
-    memoryClass->WriteMemory<int>(local + 0x34, std::make_shared<int>(122));
+    t_address allocationAddy = memoryClass->AllocateMemory(0, sizeof(dllPath.length()));
+    PRINT_SUCCESS("Allocation -> " << std::hex << allocationAddy << "\n");
+
+    memoryClass->WriteStringToMemory(allocationAddy, dllPath);
+
+    PTHREAD_START_ROUTINE threatStartRoutineAddress = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandleA("Kernel32"), "LoadLibraryA");
+    CreateRemoteThread(memoryClass->getHandle(), NULL, 0, threatStartRoutineAddress, (void*)allocationAddy, 0, NULL);
+    
+    std::cin.get();
 
     return 0;    
 }
