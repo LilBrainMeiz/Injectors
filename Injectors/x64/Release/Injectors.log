@@ -1,0 +1,3 @@
+﻿  Main.cpp
+  Memory.cpp
+D:\Hydra\Injectors\Injectors\Memory.cpp(8,62): error C2106: '=' : l'opérande gauche doit être une l-value
