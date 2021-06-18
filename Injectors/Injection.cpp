@@ -1,6 +1,6 @@
 #include "Injection.h"
 
-void Injection::LoadLibraryInjection()
+auto Injection::LoadLibraryInjection() -> void
 {
     auto sPath = this->sDllPath.c_str();
     auto iLength = this->sDllPath.length();
