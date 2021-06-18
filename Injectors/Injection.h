@@ -15,6 +15,6 @@ public:
         this->sDllPath  = sDllPath;
     }
     
-    void LoadLibraryInjection();
+    auto LoadLibraryInjection() -> void;
 };
 
